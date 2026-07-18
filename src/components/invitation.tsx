@@ -19,6 +19,10 @@ function ArrowIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M14 7l5 5-5 5" /></svg>;
 }
 
+function DownIcon() {
+  return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>;
+}
+
 function PinIcon() {
   return <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></svg>;
 }
@@ -143,9 +147,13 @@ export function Invitation() {
           <div className="date-lockup"><span>28</span><div><b>Gusht</b><em>2026</em></div></div>
           <p className="arrival">Pritja e mysafirëve · 18:00–19:00</p>
           <a className="text-link" href="#konfirmimi">Konfirmoni pjesëmarrjen <ArrowIcon /></a>
+          <a className="scroll-cue" href="#me-shume" aria-label="Zbuloni më shumë më poshtë">
+            <span>Zbuloni më shumë</span>
+            <DownIcon />
+          </a>
         </section>
 
-        <section className="quote-section section-pad">
+        <section className="quote-section section-pad" id="me-shume">
           <span className="tiny-flower">✣</span>
           <p>Dashuria jonë bëhet<br /><i>Premtim i përjetshëm.</i></p>
           <span className="rule" />

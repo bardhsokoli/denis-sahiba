@@ -66,6 +66,9 @@ svg { width: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.6; strok
 .date-lockup em { font-size: .76rem; color: #69716b; }
 .arrival { margin: 30px 0 36px; font: 400 .78rem/1.6 inherit; letter-spacing: .08em; }
 .text-link { display: inline-flex; align-items: center; gap: 9px; color: var(--forest); text-decoration: none; padding-bottom: 6px; border-bottom: 1px solid var(--champagne); font-size: .72rem; text-transform: uppercase; letter-spacing: .14em; }
+.scroll-cue { position: absolute; z-index: 2; left: 50%; bottom: max(22px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; align-items: center; gap: 7px; color: #556159; text-decoration: none; transform: translateX(-50%); }
+.scroll-cue span { white-space: nowrap; text-transform: uppercase; letter-spacing: .2em; font-size: .58rem; }
+.scroll-cue svg { width: 22px; height: 22px; color: #9a7d4b; animation: invite-scroll 1.7s ease-in-out infinite; }
 .botanical { position: absolute; width: 145px; color: #a3ad9f; opacity: .48; }
 .botanical svg { width: 100%; }
 .botanical .leaf-fill { fill: currentColor; stroke: none; }
@@ -183,6 +186,11 @@ footer .hosts { margin-top: 52px; color: #89988f; font: 400 .65rem/1.5 inherit; 
 @keyframes reveal-page {
   0%, 78% { opacity: 1; }
   96%, 100% { opacity: 0; }
+}
+
+@keyframes invite-scroll {
+  0%, 100% { opacity: .45; transform: translateY(-2px); }
+  50% { opacity: 1; transform: translateY(5px); }
 }
 
 @media (min-width: 761px) {
