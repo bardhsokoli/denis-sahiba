@@ -147,7 +147,7 @@ export function Invitation() {
 
         <section className="quote-section section-pad">
           <span className="tiny-flower">✣</span>
-          <p>Dashuria jonë bëhet<br /><i>premtim i përjetshëm.</i></p>
+          <p>Dashuria jonë bëhet<br /><i>Premtim i përjetshëm.</i></p>
           <span className="rule" />
         </section>
 
