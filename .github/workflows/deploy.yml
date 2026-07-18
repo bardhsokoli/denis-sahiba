@@ -6,11 +6,11 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: production-deployment
+  group: pages
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,19 +30,22 @@ jobs:
           npm ci
           npm run build
 
-      - name: Install secure upload client
-        run: sudo apt-get update && sudo apt-get install --yes sshpass
+      - name: Upload website artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
 
-      - name: Upload to Hetzner
-        env:
-          SSHPASS: ${{ secrets.HETZNER_SFTP_PASSWORD }}
-        run: |
-          sshpass -e sftp \
-            -o StrictHostKeyChecking=accept-new \
-            "${{ secrets.HETZNER_SFTP_USER }}@${{ secrets.HETZNER_SFTP_HOST }}" <<'SFTP'
-          mkdir public_html/denis-sahiba.com
-          cd public_html/denis-sahiba.com
-          lcd out
-          put -r *
-          bye
-          SFTP
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Publish website
+        id: deployment
+        uses: actions/deploy-pages@v4
