@@ -1,0 +1,203 @@
+:root {
+  --forest: #17261f;
+  --forest-soft: #263a30;
+  --sage: #899789;
+  --champagne: #c7aa76;
+  --cream: #f4efe5;
+  --paper: #fbf8f1;
+  --ink: #1c211e;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--forest); }
+body { margin: 0; color: var(--ink); background: var(--forest); font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif; }
+button, input, textarea, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+svg { width: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+
+.opening { position: fixed; inset: 0; z-index: 50; min-height: 100svh; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px; color: var(--cream); background: radial-gradient(circle at 50% 42%, #344d3f 0, #1d3027 38%, #122019 100%); }
+.opening-noise { position: absolute; inset: 0; opacity: .16; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.3'/%3E%3C/svg%3E"); }
+.opening > *:not(.opening-noise,.opening-leaf) { position: relative; z-index: 2; }
+.opening .eyebrow { margin: 0 0 8px; color: #ddd5c5; }
+.opening h1 { margin: 0 0 clamp(44px, 8vh, 76px); font: 400 clamp(3.4rem, 13vw, 6.5rem)/.9 "Snell Roundhand", "Apple Chancery", cursive; letter-spacing: -.04em; }
+.opening h1 i { color: var(--champagne); font-weight: 400; }
+.eyebrow, .section-kicker { text-transform: uppercase; letter-spacing: .22em; font-size: .7rem; line-height: 1.5; }
+.opening-leaf { position: absolute; width: min(35vw, 230px); height: auto; color: #677b6d; opacity: .42; }
+.opening-leaf path { vector-effect: non-scaling-stroke; }
+.opening-leaf .leaf-fill { fill: currentColor; stroke: none; }
+.leaf-left { left: -30px; bottom: -20px; transform: rotate(8deg); }
+.leaf-right { right: -35px; top: -15px; transform: scale(-1) rotate(14deg); }
+
+.envelope-wrap { width: min(82vw, 380px); aspect-ratio: 960 / 1020; perspective: 1200px; }
+.envelope { position: relative; display: block; width: 100%; height: 100%; overflow: visible; padding: 0; border: 0; background: none; cursor: pointer; filter: drop-shadow(0 25px 35px #07110c88); }
+.envelope-photo { position: absolute; z-index: 4; left: 0; top: 31.8%; display: block; width: 100%; height: auto; object-fit: contain; transition: opacity .24s ease; }
+.opened-envelope, .envelope-overlay { position: absolute; left: 0; top: 0; width: 100%; height: auto; opacity: 0; object-fit: contain; transition: opacity .24s ease; }
+.opened-envelope { z-index: 1; }
+.envelope-overlay { z-index: 3; pointer-events: none; }
+.invitation-pull { position: absolute; z-index: 2; left: 25%; top: 29%; width: 50%; aspect-ratio: .67; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px 10px; color: var(--forest); background: linear-gradient(145deg, #fffdf8, #f4efe5); box-shadow: 0 12px 30px #0005; opacity: 0; transform: translateY(12%) scale(.9); transform-origin: center center; }
+.invitation-pull img { width: 38%; height: auto; margin-bottom: 14px; }
+.invitation-pull small { color: #8b7650; font-size: .42rem; letter-spacing: .18em; text-transform: uppercase; }
+.invitation-pull strong { margin: 7px 0; white-space: nowrap; font: 400 clamp(1rem, 5vw, 1.65rem)/1 "Snell Roundhand", "Apple Chancery", cursive; }
+.invitation-pull em { font: normal .43rem/1 inherit; letter-spacing: .18em; }
+.is-opening .envelope-photo { opacity: 0; }
+.is-opening .opening { animation: reveal-page 1.9s ease .3s forwards; }
+.is-opening .opened-envelope, .is-opening .envelope-overlay { opacity: 1; animation: retire-envelope 1.9s ease .3s forwards; }
+.is-opening .invitation-pull { animation: pull-invitation 1.9s cubic-bezier(.22,.72,.18,1) .3s forwards; }
+.is-opening .invitation-pull > * { animation: soften-invitation-content 1.9s ease .3s forwards; }
+.is-opening .opening > .eyebrow, .is-opening .opening > h1, .is-opening .open-prompt { animation: retire-opening-copy 1.9s ease .3s forwards; }
+.is-open .opening { visibility: hidden; pointer-events: none; }
+.open-prompt { margin-top: 38px; display: flex; gap: 10px; align-items: center; color: #eee6d8; background: transparent; border: 0; text-transform: uppercase; letter-spacing: .16em; font-size: .64rem; cursor: pointer; }
+.open-prompt svg { transition: transform .25s; }
+.open-prompt:hover svg { transform: translateX(5px); }
+
+.page { max-width: 760px; margin: 0 auto; overflow: hidden; background: var(--paper); }
+.section-pad { padding: 100px clamp(26px, 8vw, 72px); }
+.music-toggle { position: fixed; z-index: 20; right: 18px; top: 18px; width: 46px; height: 46px; display: grid; place-items: center; color: var(--cream); border: 1px solid #ffffff40; border-radius: 50%; background: #17261fd9; backdrop-filter: blur(8px); cursor: pointer; box-shadow: 0 8px 28px #0002; }
+
+.hero { position: relative; min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at 50% 35%, #fff 0, var(--paper) 50%, #ede7da 100%); }
+.hero-logo { width: clamp(100px, 26vw, 145px); margin-bottom: 54px; }
+.hero .eyebrow { max-width: 380px; margin: 6px 0; color: #5f665f; }
+.hero-script { margin: 5px 0 0; color: var(--forest); font: 400 clamp(3.1rem, 13vw, 5.5rem)/.85 "Snell Roundhand", "Apple Chancery", cursive; }
+.date-lockup { display: flex; align-items: center; gap: 18px; margin-top: 58px; color: var(--forest); }
+.date-lockup > span { font: 300 clamp(5rem, 22vw, 8rem)/.75 Georgia, serif; letter-spacing: -.08em; }
+.date-lockup > div { min-width: 116px; padding-left: 18px; text-align: left; border-left: 1px solid var(--champagne); }
+.date-lockup b, .date-lockup em { display: block; text-transform: uppercase; font-style: normal; letter-spacing: .18em; }
+.date-lockup b { font: 500 1rem/1.7 inherit; }
+.date-lockup em { font-size: .76rem; color: #69716b; }
+.arrival { margin: 30px 0 36px; font: 400 .78rem/1.6 inherit; letter-spacing: .08em; }
+.text-link { display: inline-flex; align-items: center; gap: 9px; color: var(--forest); text-decoration: none; padding-bottom: 6px; border-bottom: 1px solid var(--champagne); font-size: .72rem; text-transform: uppercase; letter-spacing: .14em; }
+.botanical { position: absolute; width: 145px; color: #a3ad9f; opacity: .48; }
+.botanical svg { width: 100%; }
+.botanical .leaf-fill { fill: currentColor; stroke: none; }
+.botanical-left { left: -56px; bottom: 4%; transform: rotate(-12deg); }
+.botanical-right { right: -58px; top: 3%; transform: scale(-1) rotate(12deg); }
+
+.quote-section { text-align: center; color: var(--cream); background: var(--forest); }
+.tiny-flower { color: var(--champagne); font-size: 1.4rem; }
+.quote-section p { margin: 42px auto; font: 400 clamp(2rem, 8vw, 3.2rem)/1.2 Georgia, serif; }
+.quote-section p i { color: #d6c095; font: 400 clamp(2.7rem, 10vw, 4.2rem)/1 "Snell Roundhand", "Apple Chancery", cursive; }
+.rule { display: block; width: 1px; height: 74px; margin: 0 auto; background: linear-gradient(var(--champagne), transparent); }
+
+.rings-transition { position: relative; z-index: 5; height: clamp(220px, 55vw, 290px); display: grid; place-items: center; background: linear-gradient(to bottom, var(--forest) 0 48%, #f6f1e7 48% 100%); }
+.rings-float { width: min(46vw, 240px); filter: drop-shadow(0 16px 18px #07110c55) drop-shadow(0 34px 40px #07110c2e); }
+.rings-float img { display: block; width: 100%; height: auto; }
+.reveal-item.rings-float { transform: translateY(38px) scale(.96); }
+.reveal-item.is-visible.rings-float { transform: translateY(0) scale(1); }
+
+.memories { position: relative; overflow: hidden; background: linear-gradient(150deg, #f6f1e7 0%, #fbf8f1 48%, #eae4d8 100%); }
+.memories::before { content: ""; position: absolute; width: 360px; height: 360px; right: -190px; top: 90px; border: 1px solid #9eaa9b55; border-radius: 50%; }
+.memories-heading { position: relative; z-index: 4; text-align: center; }
+.memories h2 { margin: 0; color: var(--forest); font: 400 clamp(2.8rem, 10vw, 4.7rem)/.98 Georgia, serif; letter-spacing: -.045em; }
+.memories h2 i { color: #927747; font: 400 1.1em/1 "Snell Roundhand", "Apple Chancery", cursive; }
+.photo-scene { position: relative; height: clamp(500px, 108vw, 700px); margin-top: 58px; }
+.photo-card { position: absolute; margin: 0; padding: 10px 10px 38px; background: #fffdf8; box-shadow: 0 4px 9px #18241d18, 0 22px 42px #17261f2f; transform-origin: center; }
+.photo-card img { display: block; width: 100%; height: auto; }
+.photo-card figcaption { position: absolute; left: 0; right: 0; bottom: 10px; color: #6f746f; text-align: center; font: 400 1rem/1 "Snell Roundhand", "Apple Chancery", cursive; }
+.photo-one { z-index: 1; width: 69%; left: -4%; top: 0; transform: rotate(-3deg); }
+.photo-two { z-index: 2; width: 63%; right: -3%; top: 34%; transform: rotate(3.2deg); }
+.reveal-item.photo-one { transform: translateY(38px) rotate(-3deg); }
+.reveal-item.photo-two { transform: translateY(52px) rotate(3.2deg); transition-delay: .12s; }
+.reveal-item.is-visible.photo-one { transform: translateY(0) rotate(-3deg); }
+.reveal-item.is-visible.photo-two { transform: translateY(0) rotate(3.2deg); }
+
+.section-kicker { margin: 0 0 22px; color: #7a856e; }
+.details h2, .rsvp h2, .countdown-section h2 { margin: 0; color: var(--forest); font: 400 clamp(2.8rem, 10vw, 4.7rem)/.96 Georgia, serif; letter-spacing: -.045em; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; margin: 64px 0 48px; border-top: 1px solid #d8cfbf; border-bottom: 1px solid #d8cfbf; }
+.detail-grid article { position: relative; padding: 34px 18px 34px 0; }
+.detail-grid article + article { padding-left: 28px; border-left: 1px solid #d8cfbf; }
+.detail-grid span { color: #8d7448; font: 500 .76rem/1.4 inherit; letter-spacing: .08em; text-transform: uppercase; }
+.detail-grid h3 { margin: 20px 0 16px; color: var(--forest); font: 400 clamp(1.75rem, 7vw, 2.6rem)/1.05 Georgia, serif; letter-spacing: -.035em; }
+.detail-grid p { margin: 7px 0; color: #555d57; font-size: .88rem; line-height: 1.55; }
+.primary-button { width: 100%; min-height: 58px; padding: 16px 20px; display: flex; align-items: center; justify-content: center; gap: 12px; color: var(--cream); background: var(--forest); border: 0; text-decoration: none; text-transform: uppercase; letter-spacing: .13em; font-size: .69rem; cursor: pointer; transition: background .25s, transform .25s; }
+.primary-button:hover { background: var(--forest-soft); transform: translateY(-2px); }
+
+.countdown-section { text-align: center; color: var(--cream); background: linear-gradient(#21382d, #14231c); }
+.countdown-section h2 { color: var(--cream); }
+.section-kicker.light { color: #c8b68f; }
+.countdown { margin-top: 70px; display: grid; grid-template-columns: repeat(4,1fr); }
+.countdown div { padding: 0 6px; border-right: 1px solid #ffffff20; }
+.countdown div:last-child { border: 0; }
+.countdown strong { display: block; color: #e5d9be; font: 400 clamp(1.8rem, 8vw, 3.2rem)/1 Georgia, serif; }
+.countdown span { display: block; margin-top: 12px; color: #aeb9b1; text-transform: uppercase; letter-spacing: .12em; font-size: .55rem; }
+
+.rsvp { background: #f3ede2; }
+.rsvp h2 i { color: #987f52; font: 400 1.2em/1 "Snell Roundhand", "Apple Chancery", cursive; }
+.form-intro { max-width: 430px; margin: 34px 0 54px; color: #59625b; font-size: 1rem; line-height: 1.75; }
+form { display: grid; gap: 30px; }
+form > label, legend { color: var(--forest); text-transform: uppercase; letter-spacing: .11em; font-size: .78rem; line-height: 1.5; }
+form label > span { color: #8b8e88; text-transform: none; letter-spacing: 0; }
+input, select, textarea { width: 100%; margin-top: 11px; padding: 16px 0; color: var(--ink); background: transparent; border: 0; border-bottom: 1px solid #aaa294; border-radius: 0; outline: none; font-size: 1rem; line-height: 1.5; }
+textarea { resize: vertical; }
+input:focus, select:focus, textarea:focus { border-color: var(--forest); }
+fieldset { display: grid; gap: 10px; padding: 0; border: 0; }
+legend { margin-bottom: 13px; }
+.choice { display: flex; align-items: center; gap: 12px; min-height: 50px; padding: 10px 15px; border: 1px solid #c9c1b3; cursor: pointer; }
+.choice input { width: 16px; height: 16px; margin: 0; accent-color: var(--forest); }
+.choice span { color: #485149; font-size: .92rem; }
+.submit { margin-top: 14px; }
+.submit svg { width: 18px; }
+.success { padding: 50px 28px; text-align: center; border: 1px solid #c9c1b3; }
+.success > span { display: grid; place-items: center; width: 48px; height: 48px; margin: 0 auto 22px; color: var(--cream); background: var(--forest); border-radius: 50%; }
+.success h3 { font: 400 2rem Georgia, serif; }
+.success p { color: #6d726d; font-size: .8rem; line-height: 1.7; }
+.contact-note { margin: 42px 0 0; color: #616861; text-align: center; font-size: .88rem; line-height: 1.7; }
+.contact-note a { color: var(--forest); font-weight: 600; text-underline-offset: 4px; }
+
+footer { position: relative; overflow: hidden; min-height: 620px; padding: 110px 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--cream); background: var(--forest); }
+footer > img { width: 110px; margin-bottom: 50px; filter: invert(94%) sepia(12%) saturate(281%); }
+footer p { margin: 0 0 5px; color: #b9c2bb; font: italic 1rem Georgia, serif; }
+footer h2 { margin: 0 0 40px; color: #e5d2aa; font: 400 clamp(3.3rem, 14vw, 6rem)/1 "Snell Roundhand", "Apple Chancery", cursive; }
+footer > span { letter-spacing: .28em; font-size: .65rem; }
+footer .hosts { margin-top: 52px; color: #89988f; font: 400 .65rem/1.5 inherit; letter-spacing: .12em; text-transform: uppercase; }
+.footer-leaf { position: absolute; width: 190px; color: #50645a; opacity: .38; }
+.footer-leaf .leaf-fill { fill: currentColor; stroke: none; }
+.footer-leaf.left { left: -80px; bottom: -20px; }
+.footer-leaf.right { right: -80px; top: -20px; transform: scale(-1); }
+
+.reveal-item { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .95s cubic-bezier(.22,.75,.2,1); will-change: opacity, transform; }
+.reveal-item.is-visible { opacity: 1; transform: translateY(0); }
+.detail-grid article:nth-child(2) { transition-delay: .1s; }
+
+@keyframes pull-invitation {
+  0% { opacity: 0; transform: translateY(12%) scale(.9); }
+  12% { opacity: 1; }
+  52% { opacity: 1; transform: translateY(-78%) scale(1); }
+  78%, 100% { opacity: 1; transform: translateY(-78%) scale(7); box-shadow: 0 0 0 100vmax var(--paper); }
+}
+
+@keyframes soften-invitation-content {
+  0%, 48% { opacity: 1; }
+  64%, 100% { opacity: 0; }
+}
+
+@keyframes retire-envelope {
+  0%, 48% { opacity: 1; }
+  64%, 100% { opacity: 0; }
+}
+
+@keyframes retire-opening-copy {
+  0%, 44% { opacity: 1; }
+  60%, 100% { opacity: 0; }
+}
+
+@keyframes reveal-page {
+  0%, 78% { opacity: 1; }
+  96%, 100% { opacity: 0; }
+}
+
+@media (min-width: 761px) {
+  body { background: #0f1b15; }
+  .page { box-shadow: 0 0 100px #0008; }
+  .music-toggle { right: calc(50vw - 360px); }
+}
+
+@media (max-width: 380px) {
+  .section-pad { padding-left: 21px; padding-right: 21px; }
+  .detail-grid article + article { padding-left: 18px; }
+  .opening h1 { font-size: 3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .reveal-item { opacity: 1 !important; transform: none !important; }
+}
