@@ -1,0 +1,48 @@
+name: Deploy wedding invitation
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: production-deployment
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Build static website
+        run: |
+          npm ci
+          npm run build
+
+      - name: Install secure upload client
+        run: sudo apt-get update && sudo apt-get install --yes sshpass
+
+      - name: Upload to Hetzner
+        env:
+          SSHPASS: ${{ secrets.HETZNER_SFTP_PASSWORD }}
+        run: |
+          sshpass -e sftp \
+            -o StrictHostKeyChecking=accept-new \
+            "${{ secrets.HETZNER_SFTP_USER }}@${{ secrets.HETZNER_SFTP_HOST }}" <<'SFTP'
+          mkdir public_html/denis-sahiba.com
+          cd public_html/denis-sahiba.com
+          lcd out
+          put -r *
+          bye
+          SFTP
