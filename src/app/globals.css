@@ -66,9 +66,10 @@ svg { width: 1.25rem; fill: none; stroke: currentColor; stroke-width: 1.6; strok
 .date-lockup em { font-size: .76rem; color: #69716b; }
 .arrival { margin: 30px 0 36px; font: 400 .78rem/1.6 inherit; letter-spacing: .08em; }
 .text-link { display: inline-flex; align-items: center; gap: 9px; color: var(--forest); text-decoration: none; padding-bottom: 6px; border-bottom: 1px solid var(--champagne); font-size: .72rem; text-transform: uppercase; letter-spacing: .14em; }
-.scroll-cue { position: absolute; z-index: 2; left: 50%; bottom: max(22px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; align-items: center; gap: 7px; color: #556159; text-decoration: none; transform: translateX(-50%); }
+.scroll-cue { position: fixed; z-index: 19; left: 50%; bottom: max(18px, calc(env(safe-area-inset-bottom) + 10px)); min-width: 156px; padding: 10px 18px 7px; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--cream); text-decoration: none; border: 1px solid #ffffff38; border-radius: 999px; background: #17261fe8; box-shadow: 0 8px 26px #101b1645; backdrop-filter: blur(9px); opacity: 0; pointer-events: none; transform: translate(-50%, 12px); transition: opacity .4s ease, transform .4s ease; }
+.scroll-cue.is-visible { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
 .scroll-cue span { white-space: nowrap; text-transform: uppercase; letter-spacing: .2em; font-size: .58rem; }
-.scroll-cue svg { width: 22px; height: 22px; color: #9a7d4b; animation: invite-scroll 1.7s ease-in-out infinite; }
+.scroll-cue svg { width: 19px; height: 19px; color: #d5bd91; animation: invite-scroll 1.7s ease-in-out infinite; }
 .botanical { position: absolute; width: 145px; color: #a3ad9f; opacity: .48; }
 .botanical svg { width: 100%; }
 .botanical .leaf-fill { fill: currentColor; stroke: none; }

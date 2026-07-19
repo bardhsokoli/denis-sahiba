@@ -64,6 +64,7 @@ export function Invitation() {
   const [opened, setOpened] = useState(false);
   const [muted, setMuted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [showScrollCue, setShowScrollCue] = useState(true);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const openInvitation = async () => {
@@ -95,6 +96,15 @@ export function Invitation() {
     elements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!opened || !showScrollCue) return;
+    const hideScrollCue = () => {
+      if (window.scrollY > 24) setShowScrollCue(false);
+    };
+    window.addEventListener("scroll", hideScrollCue, { passive: true });
+    return () => window.removeEventListener("scroll", hideScrollCue);
+  }, [opened, showScrollCue]);
 
   const toggleMusic = () => {
     const audio = audioRef.current;
@@ -147,7 +157,12 @@ export function Invitation() {
           <div className="date-lockup"><span>28</span><div><b>Gusht</b><em>2026</em></div></div>
           <p className="arrival">Pritja e mysafirëve · 18:00–19:00</p>
           <a className="text-link" href="#konfirmimi">Konfirmoni pjesëmarrjen <ArrowIcon /></a>
-          <a className="scroll-cue" href="#me-shume" aria-label="Zbuloni më shumë më poshtë">
+          <a
+            className={`scroll-cue ${opened && showScrollCue ? "is-visible" : ""}`}
+            href="#me-shume"
+            aria-label="Zbuloni më shumë më poshtë"
+            onClick={() => setShowScrollCue(false)}
+          >
             <span>Zbuloni më shumë</span>
             <DownIcon />
           </a>
