@@ -65,10 +65,12 @@ export function Invitation() {
   const [muted, setMuted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [showScrollCue, setShowScrollCue] = useState(true);
+  const [envelopeAssetsLoaded, setEnvelopeAssetsLoaded] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const envelopeReady = envelopeAssetsLoaded >= 3;
 
   const openInvitation = async () => {
-    if (opening || opened) return;
+    if (opening || opened || !envelopeReady) return;
     setOpening(true);
     try { await audioRef.current?.play(); } catch { setMuted(true); }
     window.setTimeout(() => {
@@ -76,6 +78,18 @@ export function Invitation() {
       window.scrollTo({ top: 0 });
     }, 2250);
   };
+
+  useEffect(() => {
+    if (opened) return;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+    const previousBodyOverflow = document.body.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.documentElement.style.overflow = previousHtmlOverflow;
+      document.body.style.overflow = previousBodyOverflow;
+    };
+  }, [opened]);
 
   useEffect(() => {
     const elements = document.querySelectorAll<HTMLElement>(
@@ -128,20 +142,21 @@ export function Invitation() {
         <Leaf className="opening-leaf leaf-right" />
         <p className="eyebrow">Jeni të ftuar në dasmën e</p>
         <h1>Denis <i>&</i> Sahiba</h1>
-        <div className="envelope-wrap">
-          <button className="envelope" onClick={openInvitation} aria-label="Hap ftesën">
-            <Image className="envelope-photo" src="/envelope.png" alt="Zarf i gjelbër me vulën e Denis dhe Sahiba" width={1140} height={830} priority />
+        <div className={`envelope-wrap ${envelopeReady ? "is-ready" : "is-loading"}`} aria-busy={!envelopeReady}>
+          {!envelopeReady && <span className="envelope-loader"><i />Duke përgatitur ftesën…</span>}
+          <button className="envelope" onClick={openInvitation} aria-label="Hap ftesën" disabled={!envelopeReady}>
+            <Image className="envelope-photo" src="/envelope.webp" alt="Zarf i gjelbër me vulën e Denis dhe Sahiba" width={760} height={553} priority onLoad={() => setEnvelopeAssetsLoaded((count) => count + 1)} />
             <span className="invitation-pull" aria-hidden="true">
               <Image src="/logo.svg" alt="" width={182} height={181} />
               <small>Ftesë dasme</small>
               <strong>Denis & Sahiba</strong>
               <em>28 · 08 · 2026</em>
             </span>
-            <Image className="opened-envelope" src="/opened-envelope.png" alt="Zarfi i hapur" width={960} height={1020} priority />
-            <Image className="envelope-overlay" src="/opened-envelope-overlay.png" alt="" width={960} height={1020} priority />
+            <Image className="opened-envelope" src="/opened-envelope.webp" alt="Zarfi i hapur" width={760} height={808} loading="eager" onLoad={() => setEnvelopeAssetsLoaded((count) => count + 1)} />
+            <Image className="envelope-overlay" src="/opened-envelope-overlay.webp" alt="" width={760} height={808} loading="eager" onLoad={() => setEnvelopeAssetsLoaded((count) => count + 1)} />
           </button>
         </div>
-        <button className="open-prompt" onClick={openInvitation}>Prekni për ta hapur <ArrowIcon /></button>
+        <button className="open-prompt" onClick={openInvitation} disabled={!envelopeReady}>{envelopeReady ? <>Prekni për ta hapur <ArrowIcon /></> : "Ftesa po ngarkohet"}</button>
       </section>
 
       <div className="page" id="ftesa">
